@@ -1,4 +1,4 @@
-name: Download sing-box via API
+name: Download sing-box via direct URL
 
 on:
   workflow_dispatch:
@@ -7,11 +7,10 @@ jobs:
   download:
     runs-on: ubuntu-latest
     steps:
-      - name: Download from GitHub API
+      - name: Download from GitHub storage
         run: |
           curl -L \
-            -H "Accept: application/octet-stream" \
-            https://api.github.com/repos/SagerNet/sing-box/releases/assets/170955938 \
+            https://objects.githubusercontent.com/github-production-release-asset-2e65be/47645840/170955938?X-Amz-Algorithm=AWS4-HMAC-SHA256 \
             -o sing-box-1.8.10-linux-amd64.tar.gz
 
       - name: Upload artifact
