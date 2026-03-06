@@ -1,22 +1,4 @@
-name: Download sing-box via API with token
+sing-box
+184 Bytes	
+sha256:3c665cd5e080510ee9864b1c09616bd0d0d0bd1ffdd5dbd7a49ed263e3c222f4
 
-on:
-  workflow_dispatch:
-
-jobs:
-  download:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download asset using GitHub token
-        run: |
-          curl -L \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/octet-stream" \
-            https://api.github.com/repos/SagerNet/sing-box/releases/assets/170955938 \
-            -o sing-box-1.8.10-linux-amd64.tar.gz
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sing-box
-          path: sing-box-1.8.10-linux-amd64.tar.gz
