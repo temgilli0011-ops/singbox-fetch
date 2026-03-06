@@ -1,22 +1,31 @@
-name: Download sing-box via API with token
+name: Build sing-box from source
 
 on:
   workflow_dispatch:
 
 jobs:
-  download:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Download asset using GitHub token
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Checkout source
         run: |
-          curl -L \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/octet-stream" \
-            https://api.github.com/repos/SagerNet/sing-box/releases/assets/170955938 \
-            -o sing-box-1.8.10-linux-amd64.tar.gz
+          git clone --depth=1 --branch v1.8.10 https://github.com/SagerNet/sing-box.git
+          cd sing-box
+          go mod download
+
+      - name: Build sing-box
+        run: |
+          cd sing-box
+          go build -o sing-box ./cmd/sing-box
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: sing-box
-          path: sing-box-1.8.10-linux-amd64.tar.gz
+          path: sing-box/sing-box
+
